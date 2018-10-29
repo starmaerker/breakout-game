@@ -110,10 +110,15 @@ function draw() {
     drawScore();
     drawLives();
     collisionDetection();
+    
+    if (spacePressed) {
+        alert("Pause");        
+    }
+
+    spacePressed = false;
+    
     x += dx;
     y += dy;
-
-
 
     if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
         dx = -dx;
