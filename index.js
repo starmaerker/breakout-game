@@ -5,7 +5,6 @@ var y = canvas.height - 30;
 var dx = 2;
 var dy = -2;
 var ballRadius = 15;
-var colourArray = ["pink", "blue", "green", "brown", "black", "yellow", "orange", "red"];
 var randColour = "lightblue";
 var paddleHeight = 10;
 var paddleWidth = 100;
@@ -14,10 +13,10 @@ var rightPressed = false;
 var leftPressed = false;
 var spacePressed = false;
 var score = 0;
-var speed = 10;
+var speed = 7;
 var lives = 3;
 
-var brickRowCount = 1;
+var brickRowCount = 5;
 var brickColumnCount = 11;
 var brickWidth = 75;
 var brickHeight = 20;
@@ -27,7 +26,7 @@ var brickOffsetLeft = 30;
 var bricks = [];
 for (var c = 0; c < brickColumnCount; c++) {
     bricks[c] = [];
-    for (var r = 0; r < brickRowCount; r++) {
+    for (var r = 0; r < brickRowCount; r++) { 
         bricks[c][r] = { x: 0, y: 0, status: 1 };
     }
 }
@@ -63,6 +62,7 @@ function collisionDetection() {
                         alert("Next Round");
                         document.location.reload();
                         setInterval(draw, speed--);
+                        brickRowCount++;
                     }
                 }
             }
@@ -110,32 +110,26 @@ function draw() {
     drawScore();
     drawLives();
     collisionDetection();
-    
+
     if (spacePressed) {
         alert("Pause");        
     }
 
     spacePressed = false;
-    
+
     x += dx;
     y += dy;
 
-    if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
-        dx = -dx;
-        //randColour = colourArray[getRandomInt(0, colourArray.length - 1)];
-        //randColour = '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6);
+    if (x + dx > canvas.width - ballRadius || x + dx < ballRadius  ) {
+        dx = -dx;        
     }
     if (y + dy < ballRadius) {
-        dy = -dy;
-        //randColour = colourArray[getRandomInt(0, colourArray.length - 1)];
-        //randColour = '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6);
+        dy = -dy;       
     }
     else if (y + dy > canvas.height - ballRadius) {
         if (x > paddleX && x < paddleX + paddleWidth) {
-            dy = -dy;
-            //randColour = colourArray[getRandomInt(0, colourArray.length - 1)];
+            dy = -dy;            
             randColour = '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6);
-
         }
         else {
             lives--;
@@ -150,9 +144,7 @@ function draw() {
                 dy = -2;
                 paddleX = (canvas.width - paddleWidth) / 2;
             }
-
         }
-
     }
 
     if (rightPressed && paddleX < canvas.width - paddleWidth) {
@@ -161,8 +153,6 @@ function draw() {
     else if (leftPressed && paddleX > 0) {
         paddleX -= 4;
     }
-
-
 }
 
 document.addEventListener("keydown", keyDownHandler, false);
